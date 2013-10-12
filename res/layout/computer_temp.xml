@@ -22,7 +22,7 @@
         android:typeface="normal" />
 
     <TextView
-        android:id="@+id/dateText"
+        android:id="@+id/dateText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -46,10 +46,10 @@
         android:typeface="normal" />
 
     <TextView
-        android:id="@+id/roomTemp"
+        android:id="@+id/roomTemp1Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/compTemp"
+        android:layout_alignLeft="@+id/compTempText"
         android:layout_below="@+id/TextView02"
         android:layout_marginTop="11dp"
         android:text="F"
@@ -58,7 +58,7 @@
         android:typeface="monospace" />
 
     <TextView
-        android:id="@+id/compTemp"
+        android:id="@+id/compTempText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/TextView01"
@@ -72,10 +72,10 @@
         android:id="@+id/TextView02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/compTemp"
+        android:layout_below="@+id/compTempText"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="Room Temperature:"
+        android:text="Room Sensor 1:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
         android:textSize="30sp"
@@ -85,7 +85,7 @@
         android:id="@+id/TextView03"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/dateText"
+        android:layout_above="@+id/dateText1"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="Last Updated:"
@@ -100,8 +100,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/TextView03"
         android:layout_centerHorizontal="true"
-        android:text="Graph" 
-        android:onClick="showTempsGraph"/>
+        android:onClick="showTempsGraph"
+        android:text="Graph Daily" />
 
     <Button
         android:id="@+id/refreshButton"
@@ -112,5 +112,27 @@
         android:layout_marginBottom="18dp"
         android:onClick="refreshTemps"
         android:text="Refresh" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/roomTemp1Text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Room Sensor 2:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/roomTemp2Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/roomTemp1Text"
+        android:layout_below="@+id/textView1"
+        android:text="F"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="80sp"
+        android:typeface="monospace" />
 
 </RelativeLayout>

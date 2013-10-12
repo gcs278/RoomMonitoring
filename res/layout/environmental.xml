@@ -14,7 +14,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
-        android:text="Enviromental:"
+        android:text="Weather Conditions:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
         android:textSize="45sp"
@@ -38,7 +38,7 @@
         android:layout_above="@+id/dateTextEnvir"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="Last Updated:"
+        android:text="Last Updated for Blacksburg,VA:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
         android:textSize="30sp"
@@ -74,11 +74,34 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/TextView01"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:text="--"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="80sp"
         android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/TextView02"
+        android:layout_marginTop="10dp"
+        android:text="--"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="80sp"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/weatherDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="--"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="60sp" />
 
     <TextView
         android:id="@+id/TextView02"
@@ -86,6 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tempOut"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="Humidity:"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -94,15 +118,57 @@
         android:typeface="normal" />
 
     <TextView
-        android:id="@+id/humidity"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/humidity"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/TextView02"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
+        android:text="Weather Description:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tempOut"
+        android:layout_marginRight="52dp"
+        android:layout_toLeftOf="@+id/TextView01"
+        android:text="Low:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tempOut"
+        android:layout_marginLeft="39dp"
+        android:layout_toRightOf="@+id/TextView01"
+        android:text="High:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/tempHigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tempLow"
+        android:layout_alignBottom="@+id/tempLow"
+        android:layout_alignRight="@+id/textView4"
         android:text="--"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="80sp"
-        android:typeface="monospace" />
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/tempLow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:text="--"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
 
 </RelativeLayout>
