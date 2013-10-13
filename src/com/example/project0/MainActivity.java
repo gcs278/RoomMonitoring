@@ -9,13 +9,18 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.inputmethodservice.Keyboard.Key;
+import android.net.wifi.WifiConfiguration.Status;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +28,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -51,7 +57,7 @@ public class MainActivity extends FragmentActivity {
 	static int curTempLow = 0;
 	static int curTempHigh = 0;
 	static String curConditions = "--";
-	
+	GetChartValues getChartValues = new GetChartValues(MainActivity.this);
 	// Fragment variables
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
@@ -77,8 +83,8 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void run() {
 				// Execute both of the asynctasks
-				new GetTemperature().execute();
-				new GetEnvironmental().execute();
+				new GetTemperature(MainActivity.this).execute();
+				new GetEnvironmental(MainActivity.this).execute();
 			}
 		}, 0, 60, TimeUnit.SECONDS);
 	}
@@ -118,12 +124,20 @@ public class MainActivity extends FragmentActivity {
 				GregorianCalendar time = new java.util.GregorianCalendar(
 						selectedYear, selectedMonth, selectedDay, 0, 0);
 
+				getChartValues = new GetChartValues(MainActivity.this);
 				// Get values and execute graph
-				GetChartValues task = new GetChartValues(MainActivity.this);
-				task.execute("temp", time.getTimeInMillis());
+				getChartValues.execute("temp", time.getTimeInMillis());
 
 			}
 		}
+	};
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (getChartValues.getStatus() == AsyncTask.Status.RUNNING)
+				getChartValues.cancel(true);
+		}
+		return true;
 	};
 
 	// Show the temperature graphs for a day
@@ -142,13 +156,13 @@ public class MainActivity extends FragmentActivity {
 
 	// Refresh the temperatures, calls network
 	public void refreshTemps(View view) {
-		GetTemperature task = new GetTemperature();
+		GetTemperature task = new GetTemperature(MainActivity.this);
 		task.execute();
 	}
 
 	// Refresh the Usage Stats, calls network
 	public void refreshUsage(View view) {
-		GetEnvironmental task = new GetEnvironmental();
+		GetEnvironmental task = new GetEnvironmental(MainActivity.this);
 		task.execute();
 	}
 
@@ -177,7 +191,7 @@ public class MainActivity extends FragmentActivity {
 			Fragment fragment;
 			switch (position) {
 			case 0:
-				fragment = new ComputerTemp();
+				fragment = new ComputerTempFragment();
 				break;
 			case 1:
 				fragment = new EnvironmentalFragment();
@@ -259,7 +273,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	// Computer and Room temp Fragments
-	public static class ComputerTemp extends Fragment {
+	public static class ComputerTempFragment extends Fragment {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -273,10 +287,14 @@ public class MainActivity extends FragmentActivity {
 			super.onViewCreated(view, savedInstanceState);
 
 			// Instantiate textviews
-			compTempView = (TextView) getActivity().findViewById(R.id.compTempText);
-			roomTemp1View = (TextView) getActivity().findViewById(R.id.roomTemp1Text);
-			roomTemp2View = (TextView) getActivity().findViewById(R.id.roomTemp2Text);
-			dateTextView = (TextView) getActivity().findViewById(R.id.dateText1);
+			compTempView = (TextView) getActivity().findViewById(
+					R.id.compTempText);
+			roomTemp1View = (TextView) getActivity().findViewById(
+					R.id.roomTemp1Text);
+			roomTemp2View = (TextView) getActivity().findViewById(
+					R.id.roomTemp2Text);
+			dateTextView = (TextView) getActivity()
+					.findViewById(R.id.dateText1);
 
 			// Set the default values
 			setTextViews(compTempView, curCompTemp);

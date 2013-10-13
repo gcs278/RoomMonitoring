@@ -7,7 +7,7 @@
     android:background="@drawable/slqsm">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/title1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,72 +17,63 @@
         android:text="Room Monitoring"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
-        android:textSize="45sp"
+        android:textSize="@dimen/title_size"
         android:textStyle="bold"
         android:typeface="normal" />
 
     <TextView
-        android:id="@+id/dateText1"
+        android:id="@+id/computerTemperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="35dp"
-        android:text="--"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/title1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Computer Temperature:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
-        android:textSize="30sp"
+        android:textSize="@dimen/sub_title"
         android:typeface="normal" />
 
     <TextView
         android:id="@+id/roomTemp1Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/compTempText"
-        android:layout_below="@+id/TextView02"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/roomSensor1"
         android:layout_marginTop="11dp"
         android:text="F"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="80sp"
+        android:textSize="@dimen/value"
         android:typeface="monospace" />
 
     <TextView
         android:id="@+id/compTempText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TextView01"
+        android:layout_below="@+id/computerTemperature"
         android:layout_centerHorizontal="true"
         android:text="F"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="80sp"
+        android:textSize="@dimen/value"
         android:typeface="monospace" />
 
     <TextView
-        android:id="@+id/TextView02"
+        android:id="@+id/roomSensor1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/compTempText"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="Room Sensor 1:"
+        android:layout_marginTop="11dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
-        android:textSize="30sp"
+        android:textSize="@dimen/sub_title"
         android:typeface="normal" />
 
     <TextView
-        android:id="@+id/TextView03"
+        android:id="@+id/LastUpdated1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/dateText1"
@@ -91,17 +82,39 @@
         android:text="Last Updated:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
-        android:textSize="30sp"
+        android:textSize="@dimen/sub_title"
         android:typeface="normal" />
 
     <Button
         android:id="@+id/refreshUsage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/TextView03"
+        android:layout_above="@+id/LastUpdated1"
         android:layout_centerHorizontal="true"
         android:onClick="showTempsGraph"
         android:text="Graph Daily" />
+
+    <TextView
+        android:id="@+id/roomSensor2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/roomTemp1Text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:text="Room Sensor 2:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@dimen/sub_title" />
+
+    <TextView
+        android:id="@+id/roomTemp2Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/roomSensor2"
+        android:text="F"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@dimen/value"
+        android:typeface="monospace" />
 
     <Button
         android:id="@+id/refreshButton"
@@ -109,30 +122,16 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/refreshUsage"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
         android:onClick="refreshTemps"
         android:text="Refresh" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/dateText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/roomTemp1Text"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="Room Sensor 2:"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/roomTemp2Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/roomTemp1Text"
-        android:layout_below="@+id/textView1"
-        android:text="F"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="80sp"
-        android:typeface="monospace" />
+        android:text="--"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

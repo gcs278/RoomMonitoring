@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import android.app.AlertDialog;
@@ -17,7 +18,7 @@ import android.os.AsyncTask;
 
 class GetChartValues extends AsyncTask<Object, Void, String> {
 	// Context from MainActivity so we can display dialogs
-	Context mainActivity;
+	private Context mainActivity;
 
 	// Contructor, get MainActivity context
 	public GetChartValues(Context context) {
@@ -31,7 +32,7 @@ class GetChartValues extends AsyncTask<Object, Void, String> {
 		MainActivity.pd = new ProgressDialog(mainActivity);
 		MainActivity.pd.setTitle("Retrieving...");
 		MainActivity.pd.setMessage("Please wait.");
-		MainActivity.pd.setCancelable(false);
+		MainActivity.pd.setCancelable(true);
 		MainActivity.pd.setIndeterminate(true);
 		MainActivity.pd.show();
 	}
@@ -44,7 +45,8 @@ class GetChartValues extends AsyncTask<Object, Void, String> {
 		MainActivity.roomTemps.clear();
 		try {
 			// GrantSpence.com Socket
-			Socket s = new Socket("www.grantspence.com", 80);
+			Socket s = new Socket();
+			s.connect(new InetSocketAddress("www.grantspence.com", 80), 1000);
 			OutputStream stream = s.getOutputStream();
 
 			// Request using start date and end dates
@@ -64,7 +66,7 @@ class GetChartValues extends AsyncTask<Object, Void, String> {
 			BufferedReader bin = new BufferedReader(new InputStreamReader(
 					s.getInputStream()));
 			MainActivity.receiveHeader(bin, 6); // Get Header
-			while ((line = bin.readLine()) != null) {
+			while ((line = bin.readLine()) != null && !isCancelled()) {
 				System.out.println(line);
 				// Replace any html break
 				line = line.replace("<br>", "");
@@ -84,9 +86,9 @@ class GetChartValues extends AsyncTask<Object, Void, String> {
 			}
 			s.close();
 		} catch (RuntimeException e) {
-			System.out.println("RuntimeError" + e.toString());
+			return e.toString();
 		} catch (IOException e) {
-			System.out.println("Error" + e.toString());
+			return e.toString();
 		}
 		return params[0].toString();
 	}
@@ -105,6 +107,16 @@ class GetChartValues extends AsyncTask<Object, Void, String> {
 			Intent lineIntent = line.getIntent(mainActivity,
 					MainActivity.compTemps, MainActivity.roomTemps);
 			mainActivity.startActivity(lineIntent);
+		} else if (result.contains("ConnectException")) {
+			// No data was received
+			new AlertDialog.Builder(mainActivity).setMessage(
+					"Cannot connect to www.grantspence.com:80").show();
+		} else if (result.contains("SocketTimeoutException")) {
+			// No data was received
+			new AlertDialog.Builder(mainActivity)
+					.setMessage(
+							"Socket Timeout Exception: Cannot connect to www.grantspence.com:80")
+					.show();
 		} else {
 			// No data was received
 			new AlertDialog.Builder(mainActivity).setMessage(

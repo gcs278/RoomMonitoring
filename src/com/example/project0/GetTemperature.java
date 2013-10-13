@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 
 // Asynctask to retrieve temperature data from my server
@@ -14,14 +16,21 @@ import android.os.AsyncTask;
 // Room Sensor 1 and 2, Computer Temperature
 
 class GetTemperature extends AsyncTask<String, Void, String> {
+	Context mainActivity;
+
+	public GetTemperature(Context context) {
+		mainActivity = context;
+	}
 
 	// Retrieve data
 	@Override
 	protected String doInBackground(String... params) {
+
 		String result = "";
 		try {
 			// Domain of my server
-			Socket s = new Socket("www.grantspence.com", 80);
+			Socket s = new Socket();
+			s.connect(new InetSocketAddress("www.grantspence.com", 80), 1000);
 			OutputStream stream = s.getOutputStream();
 			// temp.php will return the latest temp value
 			stream.write("GET /temp.php HTTP/1.1\r\n".getBytes());
@@ -73,8 +82,14 @@ class GetTemperature extends AsyncTask<String, Void, String> {
 			MainActivity.roomTemp1View.setText(temps[2] + (char) 0x00B0 + "F");
 			MainActivity.roomTemp2View.setText(temps[3] + (char) 0x00B0 + "F");
 			MainActivity.dateTextView.setText(time.toGMTString());
-		} else {
-			System.out.println("Error: Unknown data format");
+		} else if (result.contains("ConnectException")) {
+			// No data was received
+			new AlertDialog.Builder(mainActivity).setMessage(
+					"Cannot connect to www.grantspence.com:80").show();
+		} else if (result.contains("SocketTimeoutException")) {
+			// No data was received
+			new AlertDialog.Builder(mainActivity).setMessage(
+					"Socket Timeout Exception: Cannot connect to www.grantspence.com:80").show();
 		}
 
 	}

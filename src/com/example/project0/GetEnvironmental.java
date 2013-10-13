@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.sql.Date;
 
@@ -19,6 +20,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import com.example.project0.MainActivity;
 
@@ -27,6 +30,11 @@ import com.example.project0.MainActivity;
 // Updates GUI on post
 
 class GetEnvironmental extends AsyncTask<String, Void, String> {
+	Context mainActivity;
+
+	public GetEnvironmental(Context context) {
+		mainActivity = context;
+	}
 
 	// Get Data
 	@Override
@@ -34,7 +42,10 @@ class GetEnvironmental extends AsyncTask<String, Void, String> {
 		String result = "";
 		try {
 			// Using WorldWeatherOnline's API socket
-			Socket s = new Socket("api.worldweatheronline.com", 80);
+			Socket s = new Socket();
+			s.connect(new InetSocketAddress("api.worldweatheronline.com", 80),
+					1000);
+
 			OutputStream stream = s.getOutputStream();
 
 			// Created query for Blacksburg
@@ -84,16 +95,17 @@ class GetEnvironmental extends AsyncTask<String, Void, String> {
 					"/data/weather/tempMaxF", document));
 
 			s.close();
+			result = "success";
 		} catch (RuntimeException e) {
 			return e.toString();
 		} catch (IOException e) {
-			System.out.println("Error" + e.toString());
+			return e.toString();
 		} catch (ParserConfigurationException e) {
-			return e.toString();
+			return "ParseException";
 		} catch (SAXException e) {
-			return e.toString();
+			return "ParseException";
 		} catch (XPathExpressionException e) {
-			return e.toString();
+			return "ParseException";
 		}
 		return result;
 	}
@@ -101,19 +113,22 @@ class GetEnvironmental extends AsyncTask<String, Void, String> {
 	// Update GUI
 	@Override
 	protected void onPostExecute(String result) {
-		// Get the current date
-		Date date = new Date(System.currentTimeMillis() - 14400000);
+		if (result == "success") {
+			// Get the current date
+			Date date = new Date(System.currentTimeMillis() - 14400000);
 
-		// Update the GUI
-		MainActivity.tempOutText.setText(Integer.toString(MainActivity.curTempOut)
-				+ (char) 0x00B0 + "F");
-		MainActivity.tempLowText.setText(Integer.toString(MainActivity.curTempLow)
-				+ (char) 0x00B0 + "F");
-		MainActivity.tempHighText.setText(Integer
-				.toString(MainActivity.curTempHigh) + (char) 0x00B0 + "F");
-		MainActivity.humidityText.setText(Integer
-				.toString(MainActivity.curHumidity) + "%");
-		MainActivity.weatherDesc.setText(MainActivity.curConditions);
-		MainActivity.dateTextEnvir.setText(date.toGMTString());
+			// Update the GUI
+			MainActivity.tempOutText.setText(Integer
+					.toString(MainActivity.curTempOut) + (char) 0x00B0 + "F");
+			MainActivity.tempLowText.setText(Integer
+					.toString(MainActivity.curTempLow) + (char) 0x00B0 + "F");
+			MainActivity.tempHighText.setText(Integer
+					.toString(MainActivity.curTempHigh) + (char) 0x00B0 + "F");
+			MainActivity.humidityText.setText(Integer
+					.toString(MainActivity.curHumidity) + "%");
+			MainActivity.weatherDesc.setText(MainActivity.curConditions);
+			MainActivity.dateTextEnvir.setText(date.toGMTString());
+		} 
+
 	}
 }
