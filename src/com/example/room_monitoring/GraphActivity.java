@@ -1,4 +1,6 @@
-package com.example.project0;
+package com.example.room_monitoring;
+
+import com.example.project0.R;
 
 import android.os.Bundle;
 import android.app.Activity;

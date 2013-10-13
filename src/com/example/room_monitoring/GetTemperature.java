@@ -1,4 +1,4 @@
-package com.example.project0;
+package com.example.room_monitoring;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +20,12 @@ class GetTemperature extends AsyncTask<String, Void, String> {
 
 	public GetTemperature(Context context) {
 		mainActivity = context;
+	}
+	
+	// Let user know its updating
+	@Override
+	protected void onPreExecute() {
+		MainActivity.dateTextEnvir.setText("Updating...Please Wait");
 	}
 
 	// Retrieve data

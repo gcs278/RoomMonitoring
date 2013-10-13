@@ -91,7 +91,7 @@
         android:layout_marginTop="10dp"
         android:text="--"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="60sp" />
+        android:textSize="@dimen/Description" />
 
     <TextView
         android:id="@+id/roomSensor1"

@@ -1,4 +1,4 @@
-package com.example.project0;
+package com.example.room_monitoring;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,7 +23,8 @@ import org.xml.sax.SAXException;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import com.example.project0.MainActivity;
+
+import com.example.room_monitoring.MainActivity;
 
 // Asynctask to retrieve the current outdoor data
 // Gets temperatures and current weather conditions
@@ -35,7 +36,13 @@ class GetEnvironmental extends AsyncTask<String, Void, String> {
 	public GetEnvironmental(Context context) {
 		mainActivity = context;
 	}
-
+	
+	// Let user know its updating
+	@Override
+	protected void onPreExecute() {
+		MainActivity.dateTextEnvir.setText("Updating...Please Wait");
+	}
+	
 	// Get Data
 	@Override
 	protected String doInBackground(String... params) {
@@ -128,7 +135,9 @@ class GetEnvironmental extends AsyncTask<String, Void, String> {
 					.toString(MainActivity.curHumidity) + "%");
 			MainActivity.weatherDesc.setText(MainActivity.curConditions);
 			MainActivity.dateTextEnvir.setText(date.toGMTString());
-		} 
+		} else {
+			MainActivity.dateTextEnvir.setText("Please Try Again");
+		}
 
 	}
 }

@@ -1,4 +1,4 @@
-package com.example.project0;
+package com.example.room_monitoring;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +14,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import com.example.project0.R;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
