@@ -89,6 +89,17 @@ public class MainActivity extends FragmentActivity {
 				new GetEnvironmental(MainActivity.this).execute();
 			}
 		}, 0, 60, TimeUnit.SECONDS);
+
+		// Schedule the thread to run every 10 seconds
+		ScheduledExecutorService scheduler2 = Executors
+				.newSingleThreadScheduledExecutor();
+		scheduler2.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				// Execute both of the asynctasks
+				new GetEnvironmental(MainActivity.this).execute();
+			}
+		}, 0, 60, TimeUnit.SECONDS);
 	}
 
 	// Removes the header from the incoming HTTP GET data
